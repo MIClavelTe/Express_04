@@ -28,6 +28,7 @@ app.post('/bye', (req, res) => {
     res.redirect('/student');
 });
 
+
 app.get('/cards', (req,res) => {
     var random = Math.floor(Math.random() * 10) + 1
     res.render('cards', {prompt: questions[random], hint: hints[random], answer: answers[random]});
