@@ -15,6 +15,15 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(cookieParser());
 app.set('view engine', 'pug');
 
+app.use((req, res, next) => {
+    console.log('Hello');
+    next();
+});
+app.use((req, res, next) => {
+    console.log('World!');
+    next();
+});
+
 app.get('/', (req,res) => {
     var username = req.cookies.user
     if (username) {
