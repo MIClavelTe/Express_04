@@ -23,6 +23,10 @@ app.get('/', (req,res) => {
         res.redirect('/student');
     }
 });
+app.post('/bye', (req, res) => {
+    res.clearCookie('user');
+    res.redirect('/student');
+});
 
 app.get('/cards', (req,res) => {
     var random = Math.floor(Math.random() * 10) + 1

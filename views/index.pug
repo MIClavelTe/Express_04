@@ -5,6 +5,8 @@ block content
         if user 
             h2 Welcome, #{user}!
             a(href="http://localhost:4000/cards") Play Now
+            form(action="/bye", method="post")
+                button(type="submit") Log Out
         else    
             h2 Welcome, Student!
             a(href="http://localhost:4000/student") Sign up
