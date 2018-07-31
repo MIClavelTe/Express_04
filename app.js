@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const app = express()
+const app = express();
 
 const questions = ["What's the smallest animal on Earth?", "How many legs does a milipede have?",
      "How big is a baby kangaroo?", "What's the loudest animal in the world?", "How fast can a cheetah run?",
@@ -15,26 +15,13 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(cookieParser());
 app.set('view engine', 'pug');
 
-app.use((req, res, next) => {
-    console.log('Hello');
-    next();
-});
-app.use((req, res, next) => {
-    console.log('World!');
-    next();
-});
-
-app.get('/', (req,res) => {
-    var username = req.cookies.user
-    if (username) {
-        res.render('index', {user: username});
+app.get('/', (req, res) => {
+    const name = req.cookies.username;
+    if (name) {
+      res.render('index', { name });
     } else {
-        res.redirect('/student');
+      res.redirect('/student');
     }
-});
-app.post('/bye', (req, res) => {
-    res.clearCookie('user');
-    res.redirect('/student');
 });
 
 
@@ -47,21 +34,31 @@ app.post('/cards', (req,res) => {
     res.render('cards', {prompt: questions[random], hint: hints[random], answer: answers[random]});
 });
 
-app.get('/student', (req,res) => {
-    var username = req.cookies.user
-    if (username) {
-        res.redirect('/');
-    } else {
-        res.render('student', {user: username});
-    }
-});
-app.post('/student', (req,res) => {
-    var user = req.body.user;
-    res.cookie('user', user)
-    res.render('student', {user: user});
+app.get('/student', (req, res) => {
+  const name = req.cookies.username;
+  if (name) {
+    res.redirect('/');
+  } else {
+    res.render('student');
+  }
 });
 
+app.post('/student', (req, res) => {
+  res.cookie('username', req.body.username);
+  res.redirect('/');
+});
 
-app.listen(4000, () => {
-    console.log('Server Running at localhost:4000');
+app.post('/bye', (req, res) => {
+  res.clearCookie('username');
+  res.redirect('/student');
+});
+
+app.use((err, req, res, next) => {
+  res.locals.error = err;
+  res.status(err.status);
+  res.render('error');
+});
+
+app.listen(3000, () => {
+    console.log('Running at running on localhost:3000')
 });
